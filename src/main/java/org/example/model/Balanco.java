@@ -55,8 +55,24 @@ public class Balanco extends EntityId {
                     " Valor operação: " + op.getValorTotalDaOperacao());
         }
         System.out.println("------------------------------");
+        System.out.println("Total débitos: " + this.getValorTotal(TipoOperacao.DEBITO));
+        System.out.println("Total créditos: " + this.getValorTotal(TipoOperacao.CREDITO));
+        System.out.println("Total: " + (this.getValorTotal(TipoOperacao.CREDITO) -
+                this.getValorTotal(TipoOperacao.DEBITO)));
     }
 
+    public String getTipoOperacao(OperacaoFinanceira operacao){
+        if(operacao instanceof Compra){
+            return "Compra";
+        }if(operacao instanceof Venda){
+            return "Venda";
+        }
+        return "Locação";
+    }
+    public Double getValorTotal(TipoOperacao tipo){
+        return this.getOperacoes().stream().filter(op -> op.getTipoOperacao().equals(tipo))
+                .mapToDouble(OperacaoFinanceira :: getValorTotalDaOperacao).sum();
+    }
     @Override
     public String toString() {
         return "Balanco{" +
