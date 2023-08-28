@@ -10,6 +10,8 @@ public class Produto extends ItemVendavel {
     private LocalDate dataPrazo;
     private Status status;
 
+    private Double precoVenda;
+
     public Produto(String descricao, String nome) {
         this.nome = nome;
 
@@ -60,6 +62,18 @@ public class Produto extends ItemVendavel {
         double lucro = super.getValorUnitario() - precoCompra;
         double margemLucro = (lucro / super.getValorUnitario()) * 100;
         return margemLucro;
+    }
+
+    public Double getPrecoVenda() {
+        return precoVenda;
+    }
+
+    public void setPrecoVenda(Double precoVenda) throws MargemLucroException {
+        super.setValorUnitario(precoVenda);
+
+        if(this.calcularMargemDeLucro() < 20.0){
+          throw new MargemLucroException();
+        }
     }
 
     @Override
